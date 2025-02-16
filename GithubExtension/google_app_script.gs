@@ -15,52 +15,75 @@ function doPost(e) {
             return sendCORSResponse("Error: Missing parameters");
         }
 
-    let subject = `🔥 GitHub Commit Report (${timeFrame}) 🔥`;
+      let subject = `🔥 GitHub Commit Report (${timeFrame}) 🔥`;
 
-    let body = "";
+      let body = "";
 
-    function getRandomMessage(messages) {
-        return messages[Math.floor(Math.random() * messages.length)];
-    }
+      function getRandomMessage(messages) {
+          return messages[Math.floor(Math.random() * messages.length)];
+      }
 
-    if (commitCount === 0) {
-        let zeroCommitMessages = [
-            `Bruh... *ZERO* commits?! What are you even doing? Watching YouTube tutorials and calling it "research"? 💀 Get your act together and start pushing some code!`,
-            `No commits? Seriously? Even a rubber duck could commit "fix bug". 🦆 Start coding before I report you for impersonating a developer.`,
-            `You wrote **0 commits**. That's literally the easiest number to beat. Just press some keys, damn it! 🤦‍♂️`,
-            `A whole ${timeFrame === "daily" ? "day" : "week"} and nothing? Not even a "WIP" commit? At this point, I'm questioning your entire existence. 🤨`
-        ];
-        body = getRandomMessage(zeroCommitMessages);
-    } else if (commitCount > 0 && commitCount <= 5) {
-        let lowCommitMessages = [
-            `Alright, you made **${commitCount} commits**. Not bad, but let’s be real—you can do better. 🚶‍♂️ Less scrolling, more coding!`,
-            `**${commitCount} commits**? Respectable, but you're still coding at grandma speed. Pick it up! 🚴`,
-            `You've committed **${commitCount}** times. I’d be proud if you weren’t spending half the time refactoring variable names. 😂`,
-            `Solid **${commitCount}** commits, but are you even pushing real code or just fixing typos? Be honest. 😏`
-        ];
-        body = getRandomMessage(lowCommitMessages);
-    } else if (commitCount > 5 && commitCount <= 15) {
-        let midCommitMessages = [
-            `Nice! **${commitCount} commits**—you're finally treating this repo with some respect. Keep going! 🚀`,
-            `**${commitCount} commits**? Someone's in the zone! Don’t burn out before the next sprint. 🔥`,
-            `Now we're talking! **${commitCount} commits**—I can actually tell you're a developer now. 🤖`,
-            `Your **${commitCount} commits** are keeping this repo alive. Just don’t forget to eat and sleep. 😅`
-        ];
-        body = getRandomMessage(midCommitMessages);
-    } else {
-        let highCommitMessages = [
-            `Whoa, **${commitCount} commits**?! What are you trying to prove? That you're ChatGPT in disguise? 🤖`,
-            `**${commitCount} commits**—either you love coding or you're running out of hobbies. Either way, I'm impressed. 😆`,
-            `At **${commitCount} commits**, you might not even need me anymore. Just go ahead and automate yourself. 🏆`,
-            `Damn, **${commitCount} commits**? Do you even have a social life? Or are you just in an endless loop of git add, commit, push? 😂`
-        ];
-        body = getRandomMessage(highCommitMessages);
-    }
+      if (commitCount === 0) {
+          let zeroCommitMessages = [
+              `Bruh... <b>ZERO</b> commits?! What are you even doing? Watching YouTube tutorials and calling it "research"? 💀 Get your act together and start pushing some code!`,
+              `No commits? Seriously? Even a rubber duck could commit "fix bug". 🦆 Start coding before I report you for impersonating a developer.`,
+              `You wrote <b>0 commits</b>. That's literally the easiest number to beat. Just press some keys, damn it! 🤦‍♂️`,
+              `A whole <b>${timeFrame === "daily" ? "day" : "week"}</b> and nothing? Not even a "WIP" commit? At this point, I'm questioning your entire existence. 🤨`
+          ];
+          body = getRandomMessage(zeroCommitMessages);
+      } else if (commitCount > 0 && commitCount <= 5) {
+          let lowCommitMessages = [
+              `Alright, you made <b>${commitCount} commits</b>. Not bad, but let’s be real—you can do better. 🚶‍♂️ Less scrolling, more coding!`,
+              `<b>${commitCount} commits</b>? Respectable, but you're still coding at grandma speed. Pick it up! 🚴`,
+              `You've committed <b>${commitCount}</b> times. I’d be proud if you weren’t spending half the time refactoring variable names. 😂`,
+              `Solid <b>${commitCount}</b> commits, but are you even pushing real code or just fixing typos? Be honest. 😏`
+          ];
+          body = getRandomMessage(lowCommitMessages);
+      } else if (commitCount > 5 && commitCount <= 15) {
+          let midCommitMessages = [
+              `Nice! <b>${commitCount} commits</b>—you're finally treating this repo with some respect. Keep going! 🚀`,
+              `<b>${commitCount} commits</b>? Someone's in the zone! Don't burn out before the next sprint. 🔥`,
+              `Now we're talking! <b>${commitCount} commits</b>—I can actually tell you're a developer now. 🤖`,
+              `Your <b>${commitCount} commits</b> are keeping this repo alive. Just don't forget to eat and sleep. 😅`
+          ];
+          body = getRandomMessage(midCommitMessages);
+      } else {
+          let highCommitMessages = [
+              `Whoa, <b>${commitCount} commits</b>?! What are you trying to prove? That you're ChatGPT in disguise? 🤖`,
+              `<b>${commitCount} commits</b>—either you love coding or you're running out of hobbies. Either way, I'm impressed. 😆`,
+              `At <b>${commitCount} commits</b>, you might not even need me anymore. Just go ahead and automate yourself. 🏆`,
+              `Damn, <b>${commitCount} commits</b>? Do you even have a social life? Or are you just in an endless loop of git add, commit, push? 😂`
+          ];
+          body = getRandomMessage(highCommitMessages);
+      }
 
-        MailApp.sendEmail(recipient, subject, body);
-        Logger.log("Email sent successfully to: " + recipient);
+      // Adding an Image (Use different images based on commit count)
+      let imageUrl = "";
+      if (commitCount === 0) {
+          imageUrl = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWY4bHQxeDVvanRxZnV2MzZmMXU0YXF0OWhnYmx1dzg3OGRiaXdwcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l46CyJmS9KUbokzsI/giphy.gif";
+      } else if (commitCount <= 5) {
+          imageUrl = "https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif";
+      } else if (commitCount <= 15) {
+          imageUrl = "https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif";
+      } else {
+          imageUrl = "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaTdpdDB2YXh4eDdkamQ0b2FsaTA1azE3eWxsN2szazBhaGxwY2h2byZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13HgwGsXF0aiGY/giphy.gif";
+      }
 
-        return sendCORSResponse("Email sent successfully", 200);
+      let imageTag = `<br><br><img src="${imageUrl}" width="300"><br>`;
+
+      // Salutation
+      let salutation = `<br><br>Keep pushing code! 💻🚀<br><b>- Your GitHub Tracker</b>`;
+
+      body = imageTag + body + salutation;
+
+      MailApp.sendEmail({
+      to: recipient,  // Change this to the recipient's email
+      subject: subject,
+      htmlBody: body
+  });
+      Logger.log("Email sent successfully to: " + recipient);
+
+      return sendCORSResponse("Email sent successfully", 200);
     } catch (error) {
         Logger.log("Error: " + error.message);
         return sendCORSResponse(`Error: ${error.message}`);
