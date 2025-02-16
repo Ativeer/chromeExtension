@@ -4,6 +4,7 @@
     "version": "1.0",
     "description": "Track your GitHub commits daily/weekly.",
     "permissions": ["alarms", "notifications", "storage"],
+    "host_permissions": ["https://script.google.com/macros/s/*", "https://script.googleusercontent.com/macros/*"],
     "background": {
       "service_worker": "background.js"
     },
