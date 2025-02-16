@@ -12,12 +12,13 @@ function triggerCommitFetch() {
         let commits = await getCommitCount(data.githubUsername, timeFrame);
 
         // Send email request with timeframe info
-        fetch("https://script.google.com/macros/s/AKfycbzCHA4ctiqAvvBJPE2yYHXGraprz0PySRhD77iod12279heByH4wX2AQR8rEsvvvF7a6w/exec", 
+        fetch("https://script.google.com/macros/s/**",
             {
             redirect: "follow",
             method: "POST",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            mode:'no-cors',
+            headers: { "Content-Type": "application/json",
+                "X-Extension-ID": chrome.runtime.id
+             },
             body: JSON.stringify({
                 recipient: data.email,
                 commitCount: commits,
