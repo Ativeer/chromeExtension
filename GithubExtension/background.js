@@ -37,19 +37,8 @@ function triggerCommitFetch() {
     });
 }
 
-// Function to check if a GitHub user exists
-async function doesUserExist(username) {
-    const response = await fetch(`https://api.github.com/users/${username}`);
-    return response.ok;
-}
-
 // Function to fetch commit count
 async function getCommitCount(username, timeFrame) {
-    if (!(await doesUserExist(username))) {
-        console.error("GitHub user does not exist:", username);
-        return null;
-    }
-
     const response = await fetch(`https://api.github.com/users/${username}/events`);
 
     if (!response.ok) {
