@@ -1,20 +1,26 @@
+// Also listen for manual fetch requests (from popup)
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action === "fetchCommits") {
         triggerCommitFetch();
     }
 });
 
+// Function to fetch commits and send email
 function triggerCommitFetch() {
-    chrome.storage.local.get(["githubUsername", "email", "frequency"], async (data) => {
+    chrome.storage.sync.get(["githubUsername", "email", "frequency"], async (data) => {
         if (!data.githubUsername || !data.email) return;
 
         let timeFrame = data.frequency || "daily"; // Default to daily
         let commits = await getCommitCount(data.githubUsername, timeFrame);
 
-        // Send email request with timeframe info
-        fetch("https://script.google.com/macros/s/**",
-            {
-            redirect: "follow",
+        if (commits === null) {
+            console.log(`No commits found for ${data.githubUsername}. Skipping email.`);
+            return;
+        }
+
+        // Send email request
+        fetch("<YOUR_GOOGLE_APP_SCRIPT_URL>", 
+        {
             method: "POST",
             headers: { "Content-Type": "application/json",
                 "X-Extension-ID": chrome.runtime.id
@@ -31,10 +37,26 @@ function triggerCommitFetch() {
     });
 }
 
+// Function to check if a GitHub user exists
+async function doesUserExist(username) {
+    const response = await fetch(`https://api.github.com/users/${username}`);
+    return response.ok;
+}
 
 // Function to fetch commit count
 async function getCommitCount(username, timeFrame) {
+    if (!(await doesUserExist(username))) {
+        console.error("GitHub user does not exist:", username);
+        return null;
+    }
+
     const response = await fetch(`https://api.github.com/users/${username}/events`);
+
+    if (!response.ok) {
+        console.error("Failed to fetch events for user:", username);
+        return null;
+    }
+
     const events = await response.json();
 
     let today = new Date();
