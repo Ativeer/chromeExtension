@@ -8,7 +8,7 @@ document.getElementById("saveBtn").addEventListener("click", function() {
         return;
     }
 
-    chrome.storage.local.set({ githubUsername: username, email: email, frequency: frequency }, () => {
+    chrome.storage.sync.set({ githubUsername: username, email: email, frequency: frequency }, () => {
         alert(`Settings saved! You'll receive ${frequency} email notifications.`);
 
         // Clear previous alarms
@@ -16,7 +16,7 @@ document.getElementById("saveBtn").addEventListener("click", function() {
             let periodInMinutes = frequency === "daily" ? 1440 : 10080; // 1 day or 7 days
             chrome.alarms.create("fetchCommits", { periodInMinutes });
 
-            // **Trigger Immediately After Saving**
+            // Trigger Immediately After Saving
             chrome.runtime.sendMessage({ action: "fetchCommits" });
         });
     });
